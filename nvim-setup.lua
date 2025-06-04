@@ -4,7 +4,8 @@ return {
 		bashls = {},
 	},
 	mason = {
-		"shellharden"},
+		"shellharden"
+	},
 	treesitter = {
 		"zig",
 		"bash"

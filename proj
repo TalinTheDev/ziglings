@@ -29,7 +29,6 @@ case "$1" in
         fi
         
         mkdir $SOLUTIONS -p
-        cp "$ZIGLINGS/build.zig" "$SOLUTIONS/build.zig"
         cp "$MATCHING_FILE" "$SOLUTIONS/"
         echo "Copied $(basename "$MATCHING_FILE") to $SOLUTIONS/"
 
@@ -39,9 +38,9 @@ case "$1" in
 
         EX_NUM="$2"
         if [ -z "$EX_NUM" ]; then
-            zig build -Dn=$EX_NUM
+            zig build --build-file "$ZIGLINGS_REPO/build.zig" -Dn=$EX_NM
         else
-            zig build
+            zig build --build-file "$ZIGLINGS_REPO/build.zig"
         fi
         
         exit 0;;
