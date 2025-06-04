@@ -9,6 +9,7 @@ RUN pacman -S --noconfirm --needed nvim git openssh fish yazi ripgrep fd unzip s
 
 # Create a dev user
 ARG USERNAME=talin
+ARG HOME=/home/$USERNAME
 ARG USER_UID=1000
 ARG USER_GID=1000
 
@@ -17,17 +18,12 @@ RUN groupadd --gid $USER_GID $USERNAME && \
 
 RUN chsh -s /usr/bin/fish $USERNAME
 
-# Install paru, delete local repo for cleanup, install nightly zig
-RUN useradd -m -G wheel -s /bin/bash debug
-RUN sed -Ei 's/^#\ (%wheel.*NOPASSWD.*)/\1/' /etc/sudoers
-USER debug
-WORKDIR /home/debug/
-RUN git clone https://aur.archlinux.org/paru.git && cd paru \
-  && makepkg -si --noconfirm && paru -S --noconfirm --needed zig-nightly-bin && cd .. && rm -rf paru
-
 # Set up contianer
+RUN chown $USER:$USER $HOME -R
 USER $USERNAME
+WORKDIR $HOME
 
-# Ziglings
-RUN mkdir $HOME/Projects -p && cd $HOME/Projects
-RUN git clone https://codeberg.org/ziglings/exercises.git ziglings
+# ZIG
+SHELL ["/usr/bin/fish", "-c"]
+RUN curl https://raw.githubusercontent.com/tristanisham/zvm/master/install.sh | bash
+RUN zvm i master && zvm use master
