@@ -5,7 +5,8 @@ FROM archlinux:base
 RUN pacman -Syu --noconfirm
 
 # Install packages
-RUN pacman -S --noconfirm --needed nvim git openssh fish yazi ripgrep fd unzip sudo base-devel
+RUN pacman -S --noconfirm --needed nvim git openssh fish yazi ripgrep fd unzip sudo base-devel npm
+RUN pacman -S --noconfirm --needed cargo
 
 # Create a dev user
 ARG USERNAME=talin

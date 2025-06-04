@@ -1,9 +1,12 @@
 return {
 	lsp = {
 		zls = {},
+		bashls = {},
 	},
-	mason = {},
+	mason = {
+		"shellharden"},
 	treesitter = {
 		"zig",
+		"bash"
 	},
 }

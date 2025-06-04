@@ -5,8 +5,6 @@ ZIGLINGS_REPO=$PROJECT_ROOT/exercises
 ZIGLINGS=$ZIGLINGS_REPO/exercises
 SOLUTIONS=$PROJECT_ROOT/solutions
 
-mkdir $SOLUTIONS -p
-
 case "$1" in
     update|u)
         cd $ZIGLINGS_REPO
@@ -30,6 +28,8 @@ case "$1" in
             exit 1
         fi
         
+        mkdir $SOLUTIONS -p
+        cp "$ZIGLINGS/build.zig" "$SOLUTIONS/build.zig"
         cp "$MATCHING_FILE" "$SOLUTIONS/"
         echo "Copied $(basename "$MATCHING_FILE") to $SOLUTIONS/"
 
