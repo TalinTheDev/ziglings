@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+PROJECT_ROOT=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+ZIGLINGS_REPO=$PROJECT_ROOT/exercises
+ZIGLINGS=$ZIGLINGS_REPO/exercises
+SOLUTIONS=$PROJECT_ROOT/solutions
+
+mkdir $SOLUTIONS
+
+case "$1" in
+    update|u)
+        cd $ZIGLINGS_REPO
+        git pull origin main
+        cd ..
+        git add $ZIGLINGS_REPO 
+        git commit -m "Updated ziglings from upstream"
+
+        exit 0;;
+
+    new|n)
+        EX_NUM="$2"
+        if [ -z "$EX_NUM" ]; then
+            echo "Exercise number must be provided"
+            exit 1
+        fi
+
+        MATCHING_FILE=$(find "$ZIGLINGS" -type f -name "${EX_NUM}_*.zig" | head -n 1)
+        if [ -z "$MATCHING_FILE" ]; then
+            echo "Exercise $EX_NUM not found."
+            exit 1
+        fi
+        
+        cp "$MATCHING_FILE" "$SOLUTIONS/"
+        echo "Copied $(basename "$MATCHING_FILE") to $SOLUTIONS/"
+
+        exit 0;;
+    test|t)
+        cd $SOLUTIONS
+
+        EX_NUM="$2"
+        if [ -z "$EX_NUM" ]; then
+            zig build -Dn=$EX_NUM
+        else
+            zig build
+        fi
+        
+        exit 0;;
+    *)
+        echo "Invalid Command"
+
+        exit 1;;
+esac
