@@ -38,11 +38,18 @@ case "$1" in
 
         EX_NUM="$2"
         if [ -z "$EX_NUM" ]; then
-            zig build --build-file "$ZIGLINGS_REPO/build.zig" -Dn=$EX_NM
-        else
-            zig build --build-file "$ZIGLINGS_REPO/build.zig"
+            echo "Exercise number must be provided"
+            exit 1
         fi
-        
+
+        MATCHING_FILE=$(find "$ZIGLINGS" -type f -name "${EX_NUM}_*.zig" | head -n 1)
+        if [ -z "$MATCHING_FILE" ]; then
+            echo "Exercise $EX_NUM not found."
+            exit 1
+        fi
+        FILE_NAME=$SOLUTIONS/$(basename "$MATCHING_FILE")
+        zig run "$FILE_NAME"
+
         exit 0;;
     *)
         echo "Invalid Command"
