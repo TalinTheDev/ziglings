@@ -1,0 +1,9 @@
+{
+	"name": "Ziglings",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"remoteUser": "talin",
+	"workspaceMount": "source=${localWorkspaceFolder},target=/home/talin/Projects/ziglings,type=bind",
+	"workspaceFolder": "/home/talin/Projects/ziglings"
+}
