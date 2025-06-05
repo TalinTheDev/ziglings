@@ -43,7 +43,7 @@ case "$1" in
         LATEST=$(cat $PROJECT_ROOT/latest.txt)
         ZERO_COUNT="${LATEST//[^0]}"
         ZEROS=$(printf '0%0.s' $(seq 1 ${#ZERO_COUNT})) 
-        NEXT="$ZEROS$(($LATEST + 1))"
+        NEXT="$ZEROS$((10#$LATEST + 1))"
 
         copy $NEXT
 
