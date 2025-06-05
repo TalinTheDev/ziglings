@@ -5,6 +5,20 @@ ZIGLINGS_REPO=$PROJECT_ROOT/exercises
 ZIGLINGS=$ZIGLINGS_REPO/exercises
 SOLUTIONS=$PROJECT_ROOT/solutions
 
+
+copy() {
+    MATCHING_FILE=$(find "$ZIGLINGS" -type f -name "${1}_*.zig" | head -n 1)
+    if [ -z "$MATCHING_FILE" ]; then
+        echo "Exercise $1 not found."
+        exit 1
+    fi
+
+    mkdir $SOLUTIONS -p
+    cp "$MATCHING_FILE" "$SOLUTIONS/"
+    echo "Copied $(basename "$MATCHING_FILE") to $SOLUTIONS/"
+    [[ $MATCHING_FILE =~ [0-9][0-9][0-9] ]] && echo $BASH_REMATCH > $PROJECT_ROOT/latest.txt
+}
+
 case "$1" in
     update|u)
         cd $ZIGLINGS_REPO
@@ -15,22 +29,21 @@ case "$1" in
 
         exit 0;;
 
-    new|n)
+    copy|c)
         EX_NUM="$2"
         if [ -z "$EX_NUM" ]; then
             echo "Exercise number must be provided"
             exit 1
         fi
 
-        MATCHING_FILE=$(find "$ZIGLINGS" -type f -name "${EX_NUM}_*.zig" | head -n 1)
-        if [ -z "$MATCHING_FILE" ]; then
-            echo "Exercise $EX_NUM not found."
-            exit 1
-        fi
-        
-        mkdir $SOLUTIONS -p
-        cp "$MATCHING_FILE" "$SOLUTIONS/"
-        echo "Copied $(basename "$MATCHING_FILE") to $SOLUTIONS/"
+        copy $EX_NUM
+
+        exit 0;;
+    next|n)
+        LATEST=$(cat $PROJECT_ROOT/latest.txt)
+        NEXT=$(($LATEST + 1))
+
+        copy $NEXT
 
         exit 0;;
     test|t)
