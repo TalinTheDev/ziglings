@@ -41,7 +41,9 @@ case "$1" in
         exit 0;;
     next|n)
         LATEST=$(cat $PROJECT_ROOT/latest.txt)
-        NEXT=$(($LATEST + 1))
+        ZERO_COUNT="${LATEST//[^0]}"
+        ZEROS=$(printf '0%0.s' $(seq 1 ${#ZERO_COUNT})) 
+        NEXT="$ZEROS$(($LATEST + 1))"
 
         copy $NEXT
 
@@ -51,8 +53,8 @@ case "$1" in
 
         EX_NUM="$2"
         if [ -z "$EX_NUM" ]; then
-            echo "Exercise number must be provided"
-            exit 1
+            LATEST=$(cat $PROJECT_ROOT/latest.txt)
+            EX_NUM=$LATEST
         fi
 
         MATCHING_FILE=$(find "$ZIGLINGS" -type f -name "${EX_NUM}_*.zig" | head -n 1)
