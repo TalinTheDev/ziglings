@@ -5,27 +5,31 @@ FROM archlinux:base
 RUN pacman -Syu --noconfirm
 
 # Install packages
-RUN pacman -S --noconfirm --needed nvim git openssh fish yazi ripgrep fd unzip sudo base-devel npm
+RUN pacman -S --noconfirm --needed nvim
+RUN pacman -S --noconfirm --needed git
+RUN pacman -S --noconfirm --needed openssh
+RUN pacman -S --noconfirm --needed fish
+RUN pacman -S --noconfirm --needed yazi
+RUN pacman -S --noconfirm --needed ripgrep
+RUN pacman -S --noconfirm --needed fd
+RUN pacman -S --noconfirm --needed unzip
+RUN pacman -S --noconfirm --needed sudo
+RUN pacman -S --noconfirm --needed base-devel
+RUN pacman -S --noconfirm --needed npm
 RUN pacman -S --noconfirm --needed cargo
 RUN pacman -S --noconfirm --needed less
 
 # Create a dev user
-ARG USERNAME=talin
-ARG HOME=/home/$USERNAME
+ARG USER=talin
+ARG HOME=/home/$USER
 ARG USER_UID=1000
 ARG USER_GID=1000
 
-RUN groupadd --gid $USER_GID $USERNAME && \
-    useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
+RUN groupadd --gid $USER_GID $USER && \
+    useradd --uid $USER_UID --gid $USER_GID -m $USER
 
-RUN chsh -s /usr/bin/fish $USERNAME
+RUN chsh -s /usr/bin/fish $USER
 
 # Set up contianer
-RUN chown $USER:$USER $HOME -R
-USER $USERNAME
+USER $USER
 WORKDIR $HOME
-
-# ZIG
-SHELL ["/usr/bin/fish", "-c"]
-RUN curl https://raw.githubusercontent.com/tristanisham/zvm/master/install.sh | bash
-RUN zvm i master && zvm use master

@@ -1,9 +1,14 @@
 {
 	"name": "Ziglings",
 	"build": {
-		"dockerfile": "Dockerfile"
+		"dockerfile": "Dockerfile",
+		"args": {
+			"USER": "${localEnv:USER:talin}",
+			"HOME": "${localEnv:HOME:/home/talin}"
+		}
 	},
-	"remoteUser": "talin",
-	"workspaceMount": "source=${localWorkspaceFolder},target=/home/talin/Projects/ziglings,type=bind",
-	"workspaceFolder": "/home/talin/Projects/ziglings"
+	"remoteUser": "${localEnv:USER:talin}",
+	"workspaceMount": "source=${localWorkspaceFolder},target=/home/${localEnv:USER:talin}/Projects/ziglings,type=bind",
+	"workspaceFolder": "/home/${localEnv:USER:talin}/Projects/ziglings"
+	"postCreateCommand": "/usr/bin/env fish ./containerSetup.fish"
 }
