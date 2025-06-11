@@ -10,5 +10,5 @@
 	"remoteUser": "${localEnv:USER:talin}",
 	"workspaceMount": "source=${localWorkspaceFolder},target=/home/${localEnv:USER:talin}/Projects/ziglings,type=bind",
 	"workspaceFolder": "/home/${localEnv:USER:talin}/Projects/ziglings",
-	"postStartCommand": "/usr/bin/env fish ./containerSetup"
+	"postStartCommand": "/usr/bin/env fish ./zigSetup"
 }
