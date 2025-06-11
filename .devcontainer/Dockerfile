@@ -7,6 +7,7 @@ RUN pacman -Syu --noconfirm
 # Install packages
 RUN pacman -S --noconfirm --needed nvim git openssh fish yazi ripgrep fd unzip sudo base-devel npm
 RUN pacman -S --noconfirm --needed cargo
+RUN pacman -S --noconfirm --needed less
 
 # Create a dev user
 ARG USERNAME=talin
